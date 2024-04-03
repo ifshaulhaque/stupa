@@ -1,5 +1,6 @@
 package com.example.stupa.screens.registration
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,7 +30,9 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import androidx.navigation.NavController
 import androidx.navigation.compose.rememberNavController
+import com.example.stupa.RoutePath
 import com.example.stupa.component.CountryDropDown
+import com.example.stupa.db.entity.User
 import com.example.stupa.ui.theme.StupaTheme
 
 @Composable
@@ -110,15 +113,26 @@ fun RegistrationScreen(
 
     Spacer(modifier = Modifier.height(32.dp))
 
-    Button(onClick = {
-      val formData = RegistrationFormData(
-        name = name,
-        phoneNumber = phoneNumber,
-        country = country,
-        email = email,
-        password = password
-      )
-    }) {
+    Button(
+      onClick = {
+        val user = User(
+          name = name,
+          phoneNumber = phoneNumber,
+          country = country,
+          email = email,
+          password = password
+        )
+        viewModel?.registerUser(
+          user,
+          {
+            navController.popBackStack()
+          },
+          {
+            Toast.makeText(context, it.message, Toast.LENGTH_LONG).show()
+          }
+        )
+      }
+    ) {
       Text("Register")
     }
   }
