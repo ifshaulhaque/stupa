@@ -1,5 +1,6 @@
 package com.example.stupa.screens.login
 
+import android.widget.Toast
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -90,9 +91,15 @@ fun LoginScreen(
         Spacer(modifier = Modifier.height(32.dp))
 
         Button(onClick = {
-            val formData = LoginFormData(
-                email = email,
-                password = password
+            viewModel.login(
+                email,
+                password,
+                {
+                    Toast.makeText(context, "Successfully Login", Toast.LENGTH_LONG).show()
+                },
+                {
+                    Toast.makeText(context, it, Toast.LENGTH_LONG).show()
+                }
             )
         }) {
             Text("Login")
